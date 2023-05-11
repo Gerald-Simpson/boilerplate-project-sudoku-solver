@@ -109,64 +109,51 @@ class SudokuSolver {
     }
     // create array of puzzle string
     let solvingArr = puzzleString.split('');
-    //while (solvingArr.includes('.')) {
-    for (let i = 0; i < 100; i++) {
-      for (let i = 1; i < 10; i++) {
-        let solvingString = solvingArr.join('');
-        console.log(solvingString);
-        let possiblePositionList = [];
-        for (let k = 0; k < 81; k++) {
-          if (Number.isInteger(solvingArr[k])) {
-            continue;
-          }
-          // create list of all the string positions where i could be placed
-          let theRow = this.stringPositionToRow(k);
-          let theCol = this.stringPositionToColumn(k);
-          let theReg = this.stringPositionToRegion(k);
-          if (
-            this.checkColPlacement(solvingString, theRow, theCol, i) &
-            this.checkRowPlacement(solvingString, theRow, theCol, i) &
-            this.checkRegionPlacement(solvingString, theRow, theCol, i)
-          ) {
-            possiblePositionList.push([k, theRow, theCol, theReg, i]);
-          }
-        }
-        //console.log(possiblePositionList);
-        for (let x = 1; x < 10; x++) {
-          //check possiblePositionList for any rows with only one possibility
-          let possibleRowList = possiblePositionList.filter(
-            (position) => position[1] === x
-          );
-          if (possibleRowList.length === 1) {
-            // Replace the solvingArr element with correct answer
-            //console.log(possibleRowList);
-            solvingArr[possibleRowList[0][0]] = String(i);
-          }
-          //check possiblePositionList for any columns with only one possibility
-          let possibleColList = possiblePositionList.filter(
-            (position) => position[2] === x
-          );
-          if (possibleColList.length === 1) {
-            // Replace the solvingArr element with correct answer
-            //console.log(possibleColList);
-            solvingArr[possibleColList[0][0]] = String(i);
-          }
-          //check possiblePositionList for any regions with only one possibility
-          let possibleRegList = possiblePositionList.filter(
-            (position) => position[3] === x
-          );
-          if (possibleRegList.length === 1) {
-            // Replace the solvingArr element with correct answer
-            console.log(possibleRegList);
-            console.log(solvingArr[possibleRegList[0][0]]);
-            solvingArr[possibleRegList[0][0]] = String(i);
-            console.log(solvingArr[possibleRegList[0][0]]);
-          }
-        }
-        //console.log('next num');
-        //console.log(solvingArr.join(''));
+    // create array of string positions of empty squares
+    let missingPositions = [];
+    for (let i = 0; i < 81; i++) {
+      if (solvingArr[i] === '.') {
+        missingPositions.push(i);
       }
     }
+
+    let incrementMemory = false;
+    for (let i = 0; i < missingPositions.length; i++) {
+      for (let k = 1; k < 11; k++) {
+        if (incrementMemory) {
+          // if there is no valid number for the next missionPositions increment the (current) previous number by one and try again
+          // increment k
+          k = parseInt(solvingArr[missingPositions[i]]) + 1;
+          // set solvingArr position back to . until new number found - this will prevent errros with row/col/reg checks if previous numbers have to be changed
+          solvingArr[missingPositions[i]] = '.';
+          incrementMemory = false;
+        }
+        if (k < 10) {
+          //test current position for numbers
+          let theRow = this.stringPositionToRow(missingPositions[i]);
+          let theCol = this.stringPositionToColumn(missingPositions[i]);
+          let theReg = this.stringPositionToRegion(missingPositions[i]);
+
+          //if number works, set the number in solvingArr & break out of the k for loop to move on to next positon
+          if (
+            this.checkColPlacement(solvingArr.join(''), theRow, theCol, k) &
+            this.checkRowPlacement(solvingArr.join(''), theRow, theCol, k) &
+            this.checkRegionPlacement(solvingArr.join(''), theRow, theCol, k)
+          ) {
+            solvingArr[missingPositions[i]] = String(k);
+            console.log(solvingArr.join(''));
+            break;
+          }
+          //if none of numbers work
+        }
+        if (k === 10) {
+          incrementMemory = true;
+          // set i for loop back one place
+          i -= 2;
+        }
+      }
+    }
+    //return the completed  string
     return solvingArr.join('');
   }
 }
