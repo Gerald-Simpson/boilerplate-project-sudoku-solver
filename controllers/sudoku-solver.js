@@ -1,10 +1,14 @@
 class SudokuSolver {
   validate(puzzleString) {
     let reg = /^[0-9.]{81}$/;
-    if (reg.test(puzzleString)) {
+    if (!puzzleString) {
+      return { error: 'Required field missing' };
+    } else if (puzzleString.length != 81) {
+      return { error: 'Expected puzzle to be 81 characters long' };
+    } else if (reg.test(puzzleString)) {
       return true;
     } else {
-      return false;
+      return { error: 'Invalid characters in puzzle' };
     }
   }
   rowColumnToStringPosition(row, column) {
@@ -103,10 +107,6 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
-    // check puzzle string is valid
-    if (!this.validate(puzzleString)) {
-      return 'invalid puzzle string';
-    }
     // create array of puzzle string
     let solvingArr = puzzleString.split('');
     // create array of string positions of empty squares
@@ -128,6 +128,9 @@ class SudokuSolver {
           solvingArr[missingPositions[i]] = '.';
           incrementMemory = false;
         }
+        if (i < 0) {
+          return { error: 'Puzzle cannot be solved' };
+        }
         if (k < 10) {
           //test current position for numbers
           let theRow = this.stringPositionToRow(missingPositions[i]);
@@ -141,7 +144,6 @@ class SudokuSolver {
             this.checkRegionPlacement(solvingArr.join(''), theRow, theCol, k)
           ) {
             solvingArr[missingPositions[i]] = String(k);
-            console.log(solvingArr.join(''));
             break;
           }
           //if none of numbers work
