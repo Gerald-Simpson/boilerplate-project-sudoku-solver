@@ -49,9 +49,9 @@ module.exports = function (app) {
   app.route('/api/solve').post((req, res) => {
     let validation = solver.validate(req.body.puzzle);
     if (validation != true) {
-      return res.json(validation);
+      return res.send(validation);
     } else {
-      return res.send(solver.solve(req.body.puzzle));
+      return res.json(solver.solve(req.body.puzzle));
     }
   });
 };

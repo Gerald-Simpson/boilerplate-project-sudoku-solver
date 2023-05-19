@@ -15,7 +15,7 @@ suite('Functional Tests', () => {
       .send({ puzzle: testPuzzles[0][0] })
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, testPuzzles[0][1]);
+        assert.equal(res.body.solution, testPuzzles[0][1]);
       });
   });
   test('Solve a puzzle with missing puzzle string: POST request to /api/solve', function () {
@@ -140,9 +140,7 @@ suite('Functional Tests', () => {
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.deepEqual(res.body, {
-          error: 'Required field(s) missing',
-        });
+        assert.equal(res.body.error, 'Required field(s) missing');
       });
   });
   test('Check a puzzle placement with invalid characters: POST request to /api/check', function () {

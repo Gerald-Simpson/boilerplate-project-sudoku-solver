@@ -65,7 +65,7 @@ suite('Unit Tests', () => {
   });
   test('Valid puzzle strings pass the solver', function () {
     testPuzzles.forEach((array) => {
-      assert.strictEqual(solver.solve(array[0]), array[1]);
+      assert.deepEqual(solver.solve(array[0]), { solution: array[1] });
     });
   });
   test('Invalid puzzle strings fail the solver', function () {
@@ -78,7 +78,7 @@ suite('Unit Tests', () => {
   });
   test('Solver returns the expected solution for an incomplete puzzle', function () {
     testPuzzles.forEach((array) => {
-      assert.strictEqual(solver.solve(array[0]), array[1]);
+      assert.deepEqual(solver.solve(array[0]), { solution: array[1] });
     });
   });
 });

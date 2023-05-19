@@ -138,6 +138,9 @@ class SudokuSolver {
     let incrementMemory = false;
     for (let i = 0; i < missingPositions.length; i++) {
       for (let k = 1; k < 11; k++) {
+        if (i < 0) {
+          return { error: 'Puzzle cannot be solved' };
+        }
         if (incrementMemory) {
           // if there is no valid number for the next missionPositions increment the (current) previous number by one and try again
           // increment k
@@ -145,9 +148,6 @@ class SudokuSolver {
           // set solvingArr position back to . until new number found - this will prevent errros with row/col/reg checks if previous numbers have to be changed
           solvingArr[missingPositions[i]] = '.';
           incrementMemory = false;
-        }
-        if (i < 0) {
-          return { error: 'Puzzle cannot be solved' };
         }
         if (k < 10) {
           //test current position for numbers
@@ -174,7 +174,7 @@ class SudokuSolver {
       }
     }
     //return the completed  string
-    return solvingArr.join('');
+    return { solution: solvingArr.join('') };
   }
 }
 
