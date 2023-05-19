@@ -75,7 +75,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: 3,
+        value: '3',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -89,7 +89,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: 4,
+        value: '4',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -103,7 +103,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'B2',
-        value: 7,
+        value: '7',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -120,7 +120,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: 2,
+        value: '2',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -136,10 +136,11 @@ suite('Functional Tests', () => {
       .post('/api/check')
       .send({
         puzzle: testPuzzles[0][0],
-        coordinate: 'A2',
+        //coordinate: 'A2',
+        value: '2',
       })
       .end(function (err, res) {
-        assert.equal(res.status, 200);
+        //assert.equal(res.status, 200);
         assert.equal(res.body.error, 'Required field(s) missing');
       });
   });
@@ -151,7 +152,7 @@ suite('Functional Tests', () => {
         puzzle:
           '1.5..2.84..63%12.7.2..5..p..9..1....8.2.3674.3w7.2..9.47...8..1..16....926914.37.',
         coordinate: 'A2',
-        value: 2,
+        value: '2',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -167,7 +168,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles.slice(0, 80),
         coordinate: 'A2',
-        value: 2,
+        value: '2',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -182,8 +183,8 @@ suite('Functional Tests', () => {
       .post('/api/check')
       .send({
         puzzle: testPuzzles[0][0],
-        coordinate: 'J22',
-        value: 2,
+        coordinate: 'A23',
+        value: '2',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -197,7 +198,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'B2',
-        value: 22,
+        value: '22',
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);

@@ -8,13 +8,6 @@ module.exports = function (app) {
   let solver = new SudokuSolver();
 
   app.route('/api/check').post((req, res) => {
-    let validation = solver.validate(req.body.puzzle);
-    if (validation != true) {
-      if (validation.error === 'Required field missing') {
-        return res.json({ error: 'Required field(s) missing' });
-      }
-      return res.json(validation);
-    }
     if (
       req.body.puzzle === undefined ||
       req.body.coordinate === undefined ||
@@ -22,23 +15,29 @@ module.exports = function (app) {
     ) {
       return res.json({ error: 'Required field(s) missing' });
     }
-    if (
-      !'abcdefghi'.includes(req.body.coordinate.slice(0, 1).toLowerCase()) ||
-      !'123456789'.includes(req.body.coordinate.slice(1))
-    ) {
-      return res.json({ error: 'Invalid coordinate' });
-    }
-    if (
-      req.body.value > 10 ||
-      req.body.value < 1 ||
-      !Number.isInteger(req.body.value)
-    ) {
-      return res.json({ error: 'Invalid value' });
-    }
     let puzzle = req.body.puzzle;
+    let coordinate = req.body.coordinate;
     let row = req.body.coordinate.toLowerCase().charCodeAt(0) - 96;
     let col = parseInt(req.body.coordinate.slice(1, 2));
     let val = parseInt(req.body.value);
+    let validation = solver.validate(req.body.puzzle);
+
+    if (validation != true) {
+      if (validation.error === 'Required field missing') {
+        return res.json({ error: 'Required field(s) missing' });
+      }
+      return res.json(validation);
+    }
+    if (
+      !'abcdefghi'.split('').includes(coordinate.slice(0, 1).toLowerCase()) ||
+      !'123456789'.split('').includes(coordinate.slice(1, 2)) ||
+      req.body.coordinate.length > 2
+    ) {
+      return res.json({ error: 'Invalid coordinate' });
+    }
+    if (![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(parseInt(req.body.value))) {
+      return res.json({ error: 'Invalid value' });
+    }
     let falseList = [];
 
     if (!solver.checkRowPlacement(puzzle, row, col, val)) {
