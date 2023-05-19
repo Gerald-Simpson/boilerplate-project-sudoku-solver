@@ -12,16 +12,20 @@ module.exports = function (app) {
     if (validation != true) {
       return res.json(validation);
     }
-    if (!req.body.puzzle | !req.body.coordinate | !req.body.value) {
+    if (
+      req.body.puzzle === undefined ||
+      req.body.coordinate === undefined ||
+      req.body.value === undefined
+    ) {
       return res.json({ error: 'Required field(s) missing' });
     }
     if (
-      !'abcdefghi'.includes(req.body.coordinate.slice(0, 1).toLowerCase()) |
+      !'abcdefghi'.includes(req.body.coordinate.slice(0, 1).toLowerCase()) ||
       !'123456789'.includes(req.body.coordinate.slice(1, 2))
     ) {
       return res.json({ error: 'Invalid coordinate' });
     }
-    if ((req.body.value > 10) | (req.body.value < 1)) {
+    if (req.body.value > 10 || req.body.value < 1) {
       return res.json({ error: 'Invalid value' });
     }
     let puzzle = req.body.puzzle;
