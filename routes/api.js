@@ -10,6 +10,9 @@ module.exports = function (app) {
   app.route('/api/check').post((req, res) => {
     let validation = solver.validate(req.body.puzzle);
     if (validation != true) {
+      if (validation.error === 'Required field missing') {
+        return res.json({ error: 'Required field(s) missing' });
+      }
       return res.json(validation);
     }
     if (
@@ -21,11 +24,15 @@ module.exports = function (app) {
     }
     if (
       !'abcdefghi'.includes(req.body.coordinate.slice(0, 1).toLowerCase()) ||
-      !'123456789'.includes(req.body.coordinate.slice(1, 2))
+      !'123456789'.includes(req.body.coordinate.slice(1))
     ) {
       return res.json({ error: 'Invalid coordinate' });
     }
-    if (req.body.value > 10 || req.body.value < 1) {
+    if (
+      req.body.value > 10 ||
+      req.body.value < 1 ||
+      !Number.isInteger(req.body.value)
+    ) {
       return res.json({ error: 'Invalid value' });
     }
     let puzzle = req.body.puzzle;

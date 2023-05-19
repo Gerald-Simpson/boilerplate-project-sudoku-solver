@@ -75,11 +75,11 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: '3',
+        value: 3,
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.deepEqual(res.body, { valid: true });
+        assert.equal(res.body.valid, true);
       });
   });
   test('Check a puzzle placement with single placement conflict: POST request to /api/check', function () {
@@ -89,7 +89,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: '4',
+        value: 4,
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -103,7 +103,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'B2',
-        value: '7',
+        value: 7,
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -120,7 +120,7 @@ suite('Functional Tests', () => {
       .send({
         puzzle: testPuzzles[0][0],
         coordinate: 'A2',
-        value: '2',
+        value: 2,
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
@@ -182,14 +182,12 @@ suite('Functional Tests', () => {
       .post('/api/check')
       .send({
         puzzle: testPuzzles[0][0],
-        coordinate: 'J2',
+        coordinate: 'J22',
         value: 2,
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.deepEqual(res.body, {
-          error: 'Invalid coordinate',
-        });
+        assert.equal(res.body.error, 'Invalid coordinate');
       });
   });
   test('Check a puzzle placement with invalid placement value: POST request to /api/check', function () {
