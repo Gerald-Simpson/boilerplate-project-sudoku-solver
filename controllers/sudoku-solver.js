@@ -43,6 +43,12 @@ class SudokuSolver {
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
+    let stringPosition = this.rowColumnToStringPosition(row, column);
+    // Set puzzleString checked spot set to .
+    puzzleString =
+      puzzleString.slice(0, stringPosition) +
+      '.' +
+      puzzleString.slice(stringPosition + 1, 81);
     // Create a string of only the row
     let rowString = puzzleString.slice(row * 9 - 9, row * 9);
     //Check if any other numbers in the rowString match the value
@@ -56,6 +62,12 @@ class SudokuSolver {
   }
 
   checkColPlacement(puzzleString, row, column, value) {
+    let stringPosition = this.rowColumnToStringPosition(row, column);
+    // Set puzzleString checked spot set to .
+    puzzleString =
+      puzzleString.slice(0, stringPosition) +
+      '.' +
+      puzzleString.slice(stringPosition + 1, 81);
     //Create a string of only the column
     let colArr = [];
     for (let i = 0; i < 81; i++) {
@@ -75,6 +87,12 @@ class SudokuSolver {
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
+    let stringPosition = this.rowColumnToStringPosition(row, column);
+    // Set puzzleString checked spot set to .
+    puzzleString =
+      puzzleString.slice(0, stringPosition) +
+      '.' +
+      puzzleString.slice(stringPosition + 1, 81);
     //Dict of region string positions
     let regionPosDict = {
       1: [0, 1, 2, 9, 10, 11, 18, 19, 20],
